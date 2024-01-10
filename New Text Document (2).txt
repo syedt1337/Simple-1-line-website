@@ -1,0 +1,67 @@
+#include<iostream>
+#include<math.h>
+#include<conio.h>
+using namespace std;
+
+class point
+{
+protected:
+	int x, y;
+public:
+	point() :x(0), y(0){}
+	
+	void setx(int a) {x = a;}
+	void sety(int b) {y = b; }
+		int getx() { return x; }
+		int gety() { return y; }
+};
+class circle :public point
+{
+protected:
+	int radius;
+public:
+	circle() :radius(0){}
+	circle(int a) :radius(a){}
+
+	void setradius(int a) { radius = a; }
+	int getradius() { return radius; }
+
+	float computearea(){
+		return 3.14*radius*radius;
+	}
+	float computecircum(){
+		return 2*3.14*radius;
+	}
+};
+
+class cylinder :public circle
+{
+protected :
+	int height;
+public:
+	cylinder() :height(0){}
+	cylinder(int a, int b) :height(a), circle(b){}
+
+	void setheight(int a) { height= a; }
+	int getheight() { return height; }
+	
+	float areacylinder(){
+		return 2 * 3.14*radius*height*2*this->computearea() ;
+	}
+	float volumecylinder(){
+		return 3.14 *radius*radius*height;
+	}
+
+};
+
+int main()
+{
+	cylinder c1(12,13);
+	
+	cout<<c1.areacylinder()<<endl;
+	cout<<c1.volumecylinder()<<endl;
+
+
+	_getch();
+	return 0;
+}

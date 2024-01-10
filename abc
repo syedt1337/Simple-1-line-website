@@ -1,0 +1,1302 @@
+TREE
+
+#include<iostream>
+#include<conio.h>
+#include<string>
+
+using namespace std;
+class Node
+{
+public:
+    Node* left;
+    Node *right;
+    int data;
+};
+class tree{
+private:
+    Node *root;
+    void insert(Node*temp, int d);
+    void inorder(Node *);
+    void postorder(Node *);
+    void preorder(Node*);
+public:
+    tree();
+    void insert(int d);
+    void inorder();
+    void postorder();
+    void preorder();
+};
+
+tree::tree(){
+    root= NULL;
+}
+void tree::insert(Node*temp, int d)
+{
+    if (d<temp->data)
+    {
+        if (temp->left==NULL)
+        {
+            Node* ptr = new Node;
+            ptr->left = NULL;
+            ptr->right = NULL;
+            ptr->data = d;
+            temp->left = ptr;
+        }
+        else
+        {
+            temp = temp->left;
+            insert(temp, d);
+        }
+    }
+    else
+    {
+        if (temp->right == NULL)
+        {
+            Node* ptr = new Node;
+            ptr->left = NULL;
+            ptr->right = NULL;
+            ptr->data = d;
+            temp->right= ptr;
+        }
+        else
+        {
+            temp = temp->right;
+            insert(temp, d);
+        }
+    }
+}
+void tree::insert(int d){
+    if (root==NULL)
+    {
+        Node* ptr = new Node;
+        ptr->left = NULL;
+        ptr->right = NULL;
+        ptr->data = d;
+        root = ptr;
+    }
+    else
+    {
+        Node *temp = root;
+        insert(temp, d);
+    }   
+}
+void tree::preorder(Node *temp){
+    if (temp!= NULL)
+    {
+        cout << temp->data << " ";
+        preorder(temp->left);
+        preorder(temp->right);
+    }
+}
+void tree::preorder(){
+    Node *temp = root;
+    if (temp==NULL)
+    {
+        cout << "No DaTA FOUND \n";
+    }
+    else
+    {
+        preorder(temp);
+    }
+}
+void tree::inorder(Node *temp){
+    if (temp != NULL)
+    {
+        inorder(temp->left);
+        cout << temp->data << " ";
+        inorder(temp->right);
+    }
+}
+void tree::inorder(){
+    Node *temp = root;
+    if (temp == NULL)
+    {
+        cout << "No DaTA FOUND \n";
+    }
+    else
+    {
+        inorder(temp);
+    }
+}
+void tree::postorder(Node *temp){
+    if (temp != NULL)
+    {
+        postorder(temp->left);
+        postorder(temp->right);
+        cout << temp->data<<" ";
+    }
+}
+void tree::postorder(){
+    Node *temp = root;
+    if (temp == NULL)
+    {
+        cout << "No DaTA FOUND \n";
+    }
+    else
+    {
+        postorder(temp);
+    }
+}
+void main()
+{
+    tree q1;
+    q1.insert(12);
+    q1.insert(24);
+    q1.insert(9);
+    q1.insert(11);
+    q1.insert(33);
+    q1.insert(19);
+    q1.insert(3);
+    q1.insert(7);
+    
+    q1.inorder();
+    cout << endl;
+    
+    q1.preorder();
+    cout << endl;
+    
+    q1.postorder();
+    _getch();
+}
+GRAPH BFS
+ypedef int itemType;
+#include<iostream>
+#include<conio.h>
+#define cap 5
+using namespace std;
+
+class Queue {
+private:
+    int items[cap], front, rear;
+public:
+    Queue(){
+        front = -1;
+        rear = -1;
+    }
+
+    int getfront()
+    {
+        return front;
+    }
+    int getrear()
+    {
+        return rear;
+    }
+    void sizeofqueue(int size)
+    {
+        items[size];
+    }
+    bool isFull(){
+        if (front == 0 && rear == cap - 1){
+            return true;
+        }
+        return false;
+    }
+
+    bool isEmpty(){
+        if (front == -1)
+            return true;
+        else
+            return false;
+    }
+
+    void enQueue(int element){
+        if (isFull()){
+            cout << "Queue is full";
+        }
+        else {
+            if (front == -1) front = 0;
+            rear++;
+            items[rear] = element;
+        }
+    }
+
+    int deQueue(){
+        int element;
+        if (isEmpty()){
+            cout << "Queue is empty" << endl;
+            return(-1);
+        }
+        else {
+            element = items[front];
+            if (front >= rear){
+                front = -1;
+                rear = -1;
+            } /* Q has only one element, so we reset the queue after deleting it. */
+            else {
+                front++;
+            }
+            return(element);
+        }
+    }
+
+    void display()
+    {
+        /* Function to display elements of Queue */
+        int i;
+        if (isEmpty()) {
+            cout << endl << "Empty Queue" << endl;
+        }
+        else
+        {
+            for (i = front; i <= rear; i++)
+                cout << items[i] << endl;
+        }
+    }
+
+};
+
+class Graph {
+private:
+    bool** adjMatrix;
+    int numVertices;
+    bool visited[];
+public:
+    Graph(int num)
+    {
+        numVertices = num;
+        adjMatrix = new bool*[numVertices];
+        for (int i = 0; i < numVertices; i++)
+        {
+            adjMatrix[i] = new bool[numVertices];
+            for (int j = 0; j < numVertices; j++)
+                adjMatrix[i][j] = false;
+        }
+    }
+
+    void addEdge(int i, int j) {
+        adjMatrix[i][j] = true;
+        adjMatrix[j][i] = true;
+    }
+
+    void removeEdge(int i, int j) {
+        adjMatrix[i][j] = false;
+        adjMatrix[j][i] = false;
+    }
+
+    bool isEdge(int i, int j) {
+        return adjMatrix[i][j];
+    }
+
+    void toString() {
+        for (int i = 0; i < numVertices; i++)
+        {
+            cout << i << " : ";
+            for (int j = 0; j < numVertices; j++)
+                cout << adjMatrix[i][j] << " ";
+            cout << "\n";
+        }
+
+    }
+    void  BFS(int sp) {
+        Queue Q;
+
+        for (int i = 0; i < numVertices; i++)
+            visited[i] = false;
+
+        Q.enQueue(sp);
+        visited[sp] = true;
+        cout << sp << " ";
+
+        while (!Q.isEmpty()) {
+
+            int temp = Q.getfront();
+
+            Q.deQueue();
+
+            int rows = sizeof adjMatrix / sizeof adjMatrix[0]; 
+            for (int i = 0; i < numVertices; i++) 
+            { 
+                if (!visited[i] && adjMatrix[sp][i] == true) 
+                {
+                    visited[i] = true;
+                    cout << i << " ";
+                    Q.enQueue(i);
+                }
+            }
+        }
+
+    }
+    ~Graph() {
+        for (int i = 0; i < numVertices; i++)
+            delete[] adjMatrix[i];
+        delete[] adjMatrix;
+    }
+};
+
+
+int main(){
+    Graph g(4);
+
+    g.addEdge(0, 1);
+    g.addEdge(0, 2);
+    g.addEdge(1, 2);
+    g.addEdge(2, 0);
+    g.addEdge(2, 3);
+    g.addEdge(3, 3);
+    g.BFS(2);
+
+    cout << endl << endl;
+    g.toString();
+    
+    _getch();
+}
+Simple graph
+#include<iostream>
+#include<conio.h>
+
+using namespace std;
+
+class Node
+{
+public:
+    int data;
+    Node* next;
+};
+class List
+{
+public:
+    Node* head;
+};
+class Graph
+{
+    void DFS(int v,bool visted[]);
+public:
+    int vertex;
+    List* arr;
+    int i;
+    Graph(int vr);
+    Node* newNode(int d);
+    void addEdge(int src, int data);
+    void DFS();
+    void printG();
+};
+Graph::Graph(int vr)
+{
+    vertex = vr ;
+    
+    arr=new List[vertex];
+    
+    for (int i=0;i<vertex;i++)
+    {
+        arr[i].head = NULL;
+    }
+}
+Node* Graph:: newNode(int d)
+{
+    Node* n=new Node;
+    n->data=d;
+    n->next=NULL;
+    return n;
+}
+void Graph::addEdge (int src,int d)
+{
+    Node* ptr=newNode(d);
+
+    Node* temp=arr[src].head;
+
+    if (temp==NULL)
+    { 
+        arr[src].head=ptr;
+    }
+    else
+     {
+         while(temp->next!=NULL)
+         temp=temp->next;
+
+         temp->next=ptr;
+     }
+}
+void Graph::printG()
+{
+    for(int i=0;i<vertex;i++)
+    {
+        Node *root = arr[i].head;
+        cout<<"Adjacency List of vertex "<<i <<endl;
+        while(root!=NULL)
+        {
+            cout<<root->data<<" -> ";
+            root=root->next;
+        }
+        cout<<endl;
+    }
+
+}
+void Graph::DFS() 
+{  
+    bool *visited = new bool[vertex]; 
+    for (int i = 0; i < vertex ; i++) 
+        visited[i] = false; 
+    DFS(0, visited);
+
+    
+} 
+void Graph::DFS(int s, bool visited[]) 
+{ 
+    visited[s] = true; 
+    cout << s <<" ";  
+    Node *temp= arr[s].head;
+            while(temp!=NULL)
+            {
+                if (visited[temp->data]!=true)
+                    DFS(temp->data, visited); 
+                    temp=temp->next;
+            } 
+        
+}
+
+void main()
+{
+    int vertex=4;
+    Graph g(vertex);
+    g.addEdge(0, 1); 
+    g.addEdge(0, 2); 
+    g.addEdge(1, 2); 
+    g.addEdge(2, 0); 
+    g.addEdge(2, 3); 
+    g.addEdge(3, 1); 
+    g.printG();
+    g.DFS();
+    _getch();
+}
+Chain.h
+
+#pragma once
+
+#include <iostream>
+#include <conio.h>
+using namespace std;
+
+class Node
+{
+public:
+	int data;
+	Node* next;
+};
+
+class List
+{
+public:
+	Node *head;
+};
+
+class chain
+{
+private:
+	List *arr;
+	int size;
+public:
+	chain(int);
+	Node* newNode(int);
+	void inserstion(int);
+	void display();
+	void searching(int);
+	void deletion(int);
+	void upgradation(int, int);
+};
+
+Chain.cpp
+
+#include "chain.h"
+
+chain::chain(int s)
+{
+	size = s;
+	arr = new List[size];
+	for (int i = 0; i < size; i++)
+	{
+		arr[i].head = NULL;
+	}
+}
+
+Node* chain::newNode(int nitem)
+{
+	Node* n = new Node;
+	n->data = nitem;
+	n->next = NULL;
+	return n;
+}
+
+void chain::inserstion(int item)
+{
+	Node* ptr = newNode(item);
+	int key = item % size;
+	if (arr[key].head == NULL)
+	{
+		arr[key].head = ptr;
+	}
+	else
+	{
+		ptr->next = arr[key].head;
+		arr[key].head = ptr;
+	}
+}
+
+void chain::display()
+{
+	for (int i = 0; i < size; i++)
+	{
+		Node* temp = arr[i].head;
+		cout << i << "-> ";
+		while (temp != NULL)
+		{
+			cout << temp->data << "-> ";
+			temp = temp->next;
+		}
+		cout << "\n";
+	}
+	cout << endl;
+}
+
+void chain::searching(int item)
+{
+	bool flag = true;
+	int key = item % size;
+	Node* temp = arr[key].head;
+
+	while (temp != NULL)
+	{
+		if (temp->data == item)
+		{
+			flag = false;
+			cout << item << " is found on index " << key << endl;
+			break;
+		}
+		else
+		{
+			temp = temp->next;
+		}
+	}
+
+	if (flag == true)
+	{
+		cout << "Element is not found in the list...!" << endl;
+	}
+}
+
+void chain::deletion(int item)
+{
+	bool flag = true;
+	int key = item % size;
+	Node* temp = arr[key].head;
+	Node* ptr = temp;
+
+	if (temp->data == item)
+	{
+		flag == false;
+		arr[key].head = temp->next;
+		delete temp;
+	}
+	else
+	{
+		while (temp != NULL)
+		{
+			if (temp->data == item)
+			{
+				flag = false;
+				ptr->next = temp->next;
+				delete temp;
+				break;
+			}
+			else
+			{
+				ptr = temp;
+				temp = temp->next;
+			}
+		}
+	}
+	
+	if (flag == true)
+	{
+		cout << "Element is not found in the list...!" << endl;
+	}
+}
+
+void chain::upgradation(int pre, int newItem)
+{
+	bool flag = true;
+	int key = pre % size;
+	Node* temp = arr[key].head;
+	Node* ptr = temp;
+
+	if (temp->data == pre)
+	{
+		flag == false;
+		arr[key].head = temp->next;
+		delete temp;
+		inserstion(newItem);
+	}
+	else
+	{
+		while (temp != NULL)
+		{
+			if (temp->data == pre)
+			{
+				flag = false;
+				ptr->next = temp->next;
+				delete temp;
+				inserstion(newItem);
+				break;
+			}
+			else
+			{
+				ptr = temp;
+				temp = temp->next;
+			}
+		}
+	}
+
+	if (flag == true)
+	{
+		cout << "Element is not found in the list...!" << endl;
+	}
+}
+Liner.h
+
+#pragma once
+
+#include <iostream>
+#include <conio.h>
+using namespace std;
+
+class Hash
+{
+private:
+	int *arr;
+	int size;
+	void insertion(int, int);
+public:
+	Hash(int);
+	void insertion(int);
+	void deletion(int);
+	void upgradation(int, int);
+	void searching(int);
+	void display();
+};
+
+Liner.cpp
+
+#include "hash.h"
+
+Hash::Hash(int s)
+{
+	size = s;
+	arr = new int[size];
+	for (int i = 0; i < size; i++)
+	{
+		arr[i] = -1;
+	}
+}
+
+void Hash::insertion(int item)
+{
+	insertion(item, 0);
+}
+
+void Hash::insertion(int item, int index)
+{
+	int key = (item + index) % size;
+	if (arr[key] == -1)
+	{
+		arr[key] = item;
+	}
+	else
+	{
+		if (index != size)
+		{
+			insertion(item, index + 1);
+		}
+		else
+		{
+			cout << "Element can't be inserted...!" << endl;
+		}
+	}
+}
+
+void Hash::display()
+{
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] != -1)
+		{
+			cout << arr[i] << " ";
+		}
+	}
+	cout << endl;
+}
+
+void Hash::searching(int item)
+{
+	bool flag = true;
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] == item)
+		{
+			flag = false;
+			cout << item << " Element is found on index " << i << endl;
+		}
+	}
+
+	if (flag == true)
+	{
+		cout << "Element is not found...!" << endl;
+	}
+}
+
+void Hash::upgradation(int pre, int newItem)
+{
+	bool flag = true;
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] == pre)
+		{
+			flag = false;
+			arr[i] = newItem;
+		}
+	}
+
+	if (flag == true)
+	{
+		cout << "Element is not found...!" << endl;
+	}
+}
+
+void Hash::deletion(int item)
+{
+	bool flag = true;
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] == item)
+		{
+			flag = false;
+			arr[i] = -1;
+		}
+	}
+
+	if (flag == true)
+	{
+		cout << "Element is not found...!" << endl;
+	}
+}
+
+Source.cpp
+
+#include "hash.h"
+
+void main()
+{
+	Hash h(10);
+	h.insertion(2);
+	h.insertion(5);
+	h.insertion(10);
+	h.insertion(30);
+	h.insertion(29);
+	h.insertion(11);
+	h.insertion(9);
+	h.insertion(6);
+	h.insertion(15);
+	h.insertion(13);
+
+	h.display();
+
+	h.searching(29);
+	h.upgradation(9, 10);
+	h.display();
+
+	h.deletion(5);
+	h.display();
+
+	_getch();
+}
+
+Quadratic.h
+
+#pragma once
+
+#include <iostream>
+#include <conio.h>
+using namespace std;
+
+class quadratic
+{
+private:
+	int *arr;
+	int size;
+	void insertion(int, int);
+public:
+	quadratic(int);
+	void insertion(int);
+	void deletion(int);
+	void upgradation(int, int);
+	void searching(int);
+	void display();
+};
+
+Quadractic.cpp
+
+#include "quadratic.h"
+
+quadratic::quadratic(int i)
+{
+	size = i;
+	arr = new int[size];
+	for (int i = 0; i < size; i++)
+	{
+		arr[i] = -1;
+	}
+}
+
+
+void quadratic::insertion(int item)
+{
+	insertion(item, 0);
+}
+
+void quadratic::insertion(int item, int index)
+{
+	int key = (item + index) % size;
+	if (arr[key] == -1)
+	{
+		arr[key] = item;
+	}
+	else
+	{
+		if (index != size)
+		{
+			insertion(item, index + 4);
+		}
+		else
+		{
+			cout << "Element can't be inserted...!" << endl;
+		}
+	}
+}
+
+void quadratic::display()
+{
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] != -1)
+		{
+			cout << arr[i] << " ";
+		}
+	}
+	cout << endl;
+}
+
+void quadratic::searching(int item)
+{
+	bool flag = true;
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] == item)
+		{
+			flag = false;
+			cout << item << " Element is found on index " << i << endl;
+		}
+	}
+
+	if (flag == true)
+	{
+		cout << "Element is not found...!" << endl;
+	}
+}
+
+void quadratic::upgradation(int pre, int newItem)
+{
+	bool flag = true;
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] == pre)
+		{
+			flag = false;
+			arr[i] = newItem;
+		}
+	}
+
+	if (flag == true)
+	{
+		cout << "Element is not found...!" << endl;
+	}
+}
+
+void quadratic::deletion(int item)
+{
+	bool flag = true;
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] == item)
+		{
+			flag = false;
+			arr[i] = -1;
+		}
+	}
+
+	if (flag == true)
+	{
+		cout << "Element is not found...!" << endl;
+	}
+}
+
+	CIRCULA QUEUE
+#define limit 6
+typedef int itemType;
+#include<iostream>
+#include<conio.h>
+using namespace std;
+class Queue
+{
+private:
+	int front,rear,count;
+	itemType qArray[limit];
+public:
+	Queue();
+	void enqueue(itemType item);
+	void dequeue(itemType& item);
+	void display();
+	bool isEmpty();
+	bool isFull();
+};
+Queue::Queue()
+{
+	front=rear=count=0;
+}
+void Queue::enqueue(itemType item)
+{
+	if(!isFull())
+	{
+		qArray[rear]=item;
+		rear=(rear+1)%limit;
+		count++;
+	}
+	else
+		cout<<"Queue is Full";
+}
+void Queue::dequeue(itemType& item)
+{
+	if(!isEmpty())
+	{
+		item=qArray[front];
+		front=(front+1)%limit;
+		count--;
+	}
+	else
+		cout<<"Queue is Empty";
+}
+void Queue::display()
+{
+	int i=count;
+	int j=front;
+	while(i!=0)
+	{
+		cout<<qArray[j]<<endl;
+		j=(j+1)%limit;
+		i--;
+	}
+}
+bool Queue::isEmpty()
+{
+	if(count==0)
+		return true;
+	else
+		return false;
+}
+bool Queue::isFull()
+{
+	if(count==limit)
+		return true;
+	else
+		return false;
+}
+void main()
+{
+	Queue q;
+	for(int i=1;i<=6;i++)
+	{
+		q.enqueue(i);
+	}
+	int x;
+	q.dequeue(x);
+	q.dequeue(x);
+	q.enqueue(7);
+	q.enqueue(8);
+	q.display();
+	_getch();
+}
+
+
+List.h
+#pragma once
+typedef int listType;
+#include<iostream>
+#include<conio.h>
+using namespace std;
+class Node
+{
+public:
+	listType data;
+	Node* next;
+
+};
+class List
+{
+private:
+	Node* head;
+public:
+	List();
+	Node* newNode(listType item);
+	void insertFirst(listType item);
+	void insertLast(listType item);
+	void insertAfter(listType prev,listType newItem);
+	listType deleteFirst();
+	void deleteLast();
+	void deleteAfter(listType a, listType b);
+	void display();
+	
+};
+
+
+List.Cpp:
+#include"List.h"
+List::List()
+{
+	head=NULL;
+}
+Node* List::newNode(listType item)
+{
+	Node* n=new Node;
+	n->data=item;
+	n->next=NULL;
+	return n;
+}
+void List::insertLast(listType item)
+{
+	Node*n =newNode(item);
+	if(head==NULL)
+		head=n;
+	else
+	{
+		Node*ptr=head;
+		while(ptr->next!=NULL)
+		{
+				ptr=ptr->next;
+		}
+		ptr->next=n;
+	}
+}
+void List::insertFirst(listType item)
+{
+	Node* n=newNode(item);
+	n->next=head;
+	head=n;
+}
+void List::insertAfter(listType prev,listType newItem)
+{
+	if(head==NULL)
+	{
+		cout<<"List is Empty: Element cannot be inserted!"<<endl;
+	}
+	else
+	{
+		Node*ptr=head;
+		bool found=true;
+		while(ptr->data!=prev)
+		{
+			ptr=ptr->next;
+			if(ptr==NULL)//means that we reached end
+			{
+				found=false;
+				cout<<"Element not found. List cannot be updated"<<endl;;
+				break;
+			}
+
+		}
+		if(found==true)
+		{
+			Node*n=newNode(newItem);
+			n->next=ptr->next;
+			ptr->next=n;
+		}
+	}
+
+}
+void List::display()
+{
+	Node*ptr=head;
+	while(ptr!=NULL)
+	{
+		cout<<ptr->data<<endl;
+		ptr=ptr->next;
+	}
+}
+listType List::deleteFirst()
+{
+	Node*ptr=head;
+	head=head->next;
+	listType x=ptr->data;
+	delete ptr;
+	return x;
+}
+void List::deleteLast()
+{
+	if(head==NULL)
+		cout<<"Element cannot be deleted!";
+	else if(head->next==NULL)
+	{
+		Node* temp=head;
+		head=NULL;
+		delete temp;
+	}
+	else
+	{
+		Node*temp=head;
+		while(temp->next->next!=NULL)
+			temp=temp->next;
+		Node*ptr=temp->next;
+		delete ptr;
+		temp->next=NULL;
+	}
+}
+void List::deleteAfter(listType a, listType b)
+{
+	if(head==NULL||head->next==NULL)
+		cout<<"Element cannot be deleted!";
+	else
+	{
+		Node*temp=head;
+		int flag=0;
+		while(temp->next!=NULL)
+		{
+			if(temp->data==a && temp->next->data==b)
+			{
+				
+				flag=1;
+				Node*ptr=temp->next;
+				temp->next=ptr->next;
+				delete ptr;
+				//break;
+			}
+			else
+				temp=temp->next;
+		}
+		if(flag==0)
+		{
+			cout<<"Element cannot be deleted!";
+		}
+	}
+}
+ Main.cpp ;
+#include"List.h"
+void main()
+{
+	List l;
+	l.insertLast(4);
+	l.insertFirst(2);
+	l.insertFirst(1);
+	l.insertFirst(3);
+	l.insertFirst(7);
+	l.insertFirst(9);
+	l.insertFirst(2);
+	l.insertFirst(1);
+	l.deleteAfter(1,2);
+	//l.deleteAfter(1,4);
+
+	l.display();
+	_getch();
+}
+
+
+Matrix.h
+
+#pragma once
+
+#include <iostream>
+#include <conio.h>
+using namespace std;
+
+class Graph {
+private:
+	bool **adjacencyMatrix; 
+	int vertex;
+public:
+	Graph(int v);
+	void addEdge(int i, int j); 
+	void removeEdge(int i, int j); 
+	void isEdge(int i, int j);
+	void print();
+};
+
+Matrix.cpp
+
+Graph::Graph(int v)
+{
+	vertex = v;
+	adjacencyMatrix = new bool*[vertex];
+	for (int i = 0; i < vertex; i++)
+	{
+		adjacencyMatrix[i] = new bool[vertex];
+	}
+	for (int i = 0; i < vertex; i++)
+	{
+		for (int j = 0; i < vertex; j++)
+		{
+			adjacencyMatrix[i][j] = false;
+		}
+	}
+}
+
+void Graph::addEdge(int i, int j)
+{
+	adjacencyMatrix[i][j] = true;
+}
+
+void Graph::removeEdge(int i, int j)
+{
+	adjacencyMatrix[i][j] = false;
+}
+
+void Graph::print()
+{
+	for (int i = 0; i < vertex; i++)
+	{
+		for (int j = 0; j < vertex; j++)
+		{
+			cout << adjacencyMatrix[i][j] << " ";
+		}
+		cout << "\n";
+	}
+}
+
+void Graph::isEdge(int i, int j)
+{
+	if (adjacencyMatrix[i][j] == 1)
+	{
+		cout << "Edge found between " << i << " to " << j << endl;
+	}
+	else
+	{
+		cout << "There is not edge between " << i << " to " << j << endl;
+	}
+}
+
+Source.cpp
+
+#include "graph.h"
+
+void main()
+{
+	Graph g(5);
+	g.addEdge(1, 2);
+	g.addEdge(1, 4);
+	
+g.removeEdge(1, 4);
+	g.print();
+	g.isEdge(1, 4);
+	g.addEdge(1, 4);
+	g.print();
+
+	_getch();
+}
+
+
+
